@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://xgfxsdir034"]
+
+[ext_resource type="Script" path="res://unit/unit.gd" id="1_faclc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vyote"]
+radius = 20.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ey00b"]
+radius = 1024.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wtixf"]
+radius = 30.0
+
+[node name="Unit" type="CharacterBody2D"]
+script = ExtResource("1_faclc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_vyote")
+
+[node name="Soldiers" type="Node2D" parent="."]
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+position = Vector2(-3, 0)
+shape = SubResource("CircleShape2D_ey00b")
+
+[node name="HitArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
+shape = SubResource("CircleShape2D_wtixf")
+
+[node name="AttackDelayTimer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
+[connection signal="body_entered" from="HitArea" to="." method="_on_hit_area_body_entered"]
+[connection signal="body_exited" from="HitArea" to="." method="_on_hit_area_body_exited"]
+[connection signal="timeout" from="AttackDelayTimer" to="." method="_on_attack_delay_timer_timeout"]

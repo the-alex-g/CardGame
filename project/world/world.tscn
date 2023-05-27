@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://bu3vngbou6wmj"]
+
+[ext_resource type="PackedScene" uid="uid://xgfxsdir034" path="res://unit/unit.tscn" id="1_wyyk4"]
+
+[node name="World" type="Node2D"]
+
+[node name="Unit" parent="." instance=ExtResource("1_wyyk4")]
+position = Vector2(297, 325)
+
+[node name="Unit3" parent="." instance=ExtResource("1_wyyk4")]
+position = Vector2(126, 101)
+
+[node name="Unit2" parent="." instance=ExtResource("1_wyyk4")]
+position = Vector2(713, 302)
+team_index = 1
+
+[node name="Unit4" parent="." instance=ExtResource("1_wyyk4")]
+position = Vector2(962, 531)
+team_index = 1
