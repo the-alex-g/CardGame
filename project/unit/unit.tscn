@@ -29,6 +29,7 @@ shape = SubResource("CircleShape2D_ey00b")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitArea"]
 shape = SubResource("CircleShape2D_wtixf")
+debug_color = Color(1, 0, 0, 0.419608)
 
 [node name="AttackDelayTimer" type="Timer" parent="."]
 

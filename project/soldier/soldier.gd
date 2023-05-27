@@ -8,10 +8,11 @@ extends Node2D
 @export var dexterity := 0
 
 var attack : Attack : get = _get_attack
+var color := Color.BLUE
 
 
 func _draw()->void:
-	draw_circle(Vector2.ZERO, 5.0, Color.BLUE)
+	draw_circle(Vector2.ZERO, 5.0, color)
 
 
 func deal_damage(incoming_attack:Attack)->void:

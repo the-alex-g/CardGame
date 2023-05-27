@@ -4,16 +4,21 @@
 
 [node name="World" type="Node2D"]
 
-[node name="Unit" parent="." instance=ExtResource("1_wyyk4")]
-position = Vector2(297, 325)
-
 [node name="Unit3" parent="." instance=ExtResource("1_wyyk4")]
-position = Vector2(126, 101)
-
-[node name="Unit2" parent="." instance=ExtResource("1_wyyk4")]
-position = Vector2(713, 302)
-team_index = 1
+position = Vector2(221, 235)
+color = Color(0.203922, 0.392157, 0.0784314, 1)
 
 [node name="Unit4" parent="." instance=ExtResource("1_wyyk4")]
-position = Vector2(962, 531)
+position = Vector2(257, 473)
+
+[node name="Unit2" parent="." instance=ExtResource("1_wyyk4")]
+position = Vector2(696, 159)
 team_index = 1
+color = Color(0.627451, 0, 0.270588, 1)
+
+[node name="Unit" parent="." instance=ExtResource("1_wyyk4")]
+position = Vector2(878, 417)
+team_index = 1
+color = Color(0.501961, 0, 0.666667, 1)
+hit_radius = 700.0
+unit_type = "Ranged"
