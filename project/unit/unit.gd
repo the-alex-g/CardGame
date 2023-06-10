@@ -12,24 +12,23 @@ const FLEE_DISTANCE := 100
 @export var speed := 150.0
 @export var attack_delay_time := 1.0
 @export var color := Color.BLUE
+@export var detection_radius := 1024.0
 @export var hit_radius := 45.0
 
 @export_category("Unit Type")
 @export_enum("Melee", "Ranged") var unit_type := "Melee"
 
-var _target : Unit : set = _set_target
-var _can_hit_target := false : set = _set_can_hit_target
+var _target : Unit
+var _is_target_in_range := false : set = _set_is_target_in_range
 var is_dead := false : set = _set_is_dead
 
 @onready var _soldier_container : Node2D = $Soldiers
 @onready var _attack_delay_timer : Timer = $AttackDelayTimer
-@onready var _hit_area : Area2D = $HitArea
+@onready var _targeting_area : TargetingArea = $TargetingArea
 
 
 func _ready()->void:
-	var collision_shape := CircleShape2D.new()
-	collision_shape.radius = hit_radius
-	$HitArea/CollisionShape2D.shape = collision_shape
+	_update_targeting_area()
 	_populate_unit()
 
 
@@ -40,7 +39,7 @@ func _process(delta:float)->void:
 	if _target == null:
 		return
 	else:
-		if not _can_hit_target: # you need to get closer
+		if not _is_target_in_range: # you need to get closer
 			# so, move the unit
 			_move_towards_target(delta)
 		else:
@@ -48,11 +47,17 @@ func _process(delta:float)->void:
 				_move_away_from_target(delta)
 
 
+func _update_targeting_area()->void:
+	_targeting_area.hit_range = hit_radius
+	_targeting_area.detection_range = detection_radius
+	_targeting_area.team_index = team_index
+
+
 func _populate_unit()->void:
 	# add all the soldiers in the proper formation.
 	_instance_soldier(Vector2.ZERO)
 	for i in unit_size - 1:
-		_instance_soldier(Vector2.RIGHT.rotated( TAU * i / (unit_size - 1) ) * 15.0)
+		_instance_soldier(Vector2.RIGHT.rotated(TAU * i / (unit_size - 1) ) * 15.0)
 
 
 func _instance_soldier(soldier_position:Vector2)->void:
@@ -107,53 +112,12 @@ func _set_is_dead(value:bool)->void:
 	is_dead = value
 
 
-func _set_can_hit_target(value:bool)->void:
-	_can_hit_target = value
-	if _can_hit_target:
+func _set_is_target_in_range(value:bool)->void:
+	_is_target_in_range = value
+	if _is_target_in_range:
 		_attack_delay_timer.start(attack_delay_time)
 	else:
 		_attack_delay_timer.stop()
-
-
-func _on_detection_area_body_entered(body:PhysicsBody2D)->void:
-	# if the new guy is closer to you than your current target,
-	# make the new guy your target
-	if is_dead:
-		return
-	
-	if body is Unit:
-		if body.team_index != team_index:
-			if _is_closer_than_target(body.global_position):
-				_set_target(body)
-
-
-func _is_closer_than_target(point:Vector2)->bool:
-	# check if the given point is closer to you than the current target
-	if _target == null:
-		return true
-	else:
-		if global_position.distance_squared_to(point) < global_position.distance_squared_to(_target.global_position):
-			return true
-		else:
-			return false
-
-
-func _on_hit_area_body_entered(body:PhysicsBody2D)->void:
-	# you can hit your target now
-	if is_dead:
-		return
-	
-	if body == _target:
-		_set_can_hit_target(true)
-
-
-func _on_hit_area_body_exited(body:PhysicsBody2D)->void:
-	# you can't hit your target anymore
-	if is_dead:
-		return
-	
-	if body == _target:
-		_set_can_hit_target(false)
 
 
 func _on_attack_delay_timer_timeout()->void:
@@ -167,39 +131,6 @@ func _on_soldier_shoot(ammo:Ammo, from:Vector2)->void:
 	get_parent().add_child(ammo)
 	var hit : bool = await ammo.ended
 	emit_signal("ranged_attack_ended", hit)
-
-
-func _on_target_died()->void:
-	_find_new_target()
-
-
-func _find_new_target()->void:
-	# find the closest enemy unit and make it your target.
-	var closest_unit : Unit
-	for body in $DetectionArea.get_overlapping_bodies():
-		if body is Unit:
-			if body.team_index != team_index and not body.is_dead:
-				if (closest_unit == null) or (global_position.distance_squared_to(body.global_position) < global_position.distance_squared_to(closest_unit.global_position)):
-					closest_unit = body
-	_set_target(closest_unit)
-
-
-func _check_hit_area_for_target()->void:
-	# can you hit the target? Used to process new targets.
-	if _hit_area.get_overlapping_bodies().has(_target):
-		_set_can_hit_target(true)
-	else:
-		_set_can_hit_target(false)
-
-
-func _set_target(value:Unit)->void:
-	# change target.
-	if is_instance_valid(_target) and _target.died.is_connected(Callable(self, "_on_target_died")):
-		_target.died.disconnect(Callable(self, "_on_target_died"))
-	if value != null:
-		value.died.connect(Callable(self, "_on_target_died"))
-	_target = value
-	_check_hit_area_for_target()
 
 
 func damage(attack_array:Array)->void:
@@ -231,3 +162,17 @@ func _die()->void:
 		_set_is_dead(true)
 		died.emit()
 		queue_free()
+
+
+func _on_targeting_area_aquired_new_target(new_target:Unit)->void:
+	if is_dead:
+		return
+	
+	_target = new_target
+
+
+func _on_targeting_area_updated_target_in_range(is_target_in_range:bool)->void:
+	if is_dead:
+		return
+	
+	_set_is_target_in_range(is_target_in_range)
