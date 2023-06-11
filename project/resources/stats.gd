@@ -24,16 +24,16 @@ func _init(i_health := 8, i_armor := 0,
 	damage_dice = i_damage_dice
 
 
-func add(to_add:Stats, sign := 1)->void:
+func add(to_add:Stats, add_sign := 1)->void:
 	# setting sign to -1 performs a subtraction instead of an addition
-	health += to_add.health * sign
-	armor += to_add.armor * sign
-	strength += to_add.strength * sign
-	dexterity += to_add.dexterity * sign
-	evasion_bonus += to_add.evasion_bonus * sign
-	if sign == 1:
+	health += to_add.health * add_sign
+	armor += to_add.armor * add_sign
+	strength += to_add.strength * add_sign
+	dexterity += to_add.dexterity * add_sign
+	evasion_bonus += to_add.evasion_bonus * add_sign
+	if add_sign == 1:
 		damage_dice.add(to_add.damage_dice)
-	elif sign == -1:
+	elif add_sign == -1:
 		damage_dice.subtract(to_add.damage_dice)
 
 

@@ -5,6 +5,7 @@ signal ranged_attack_resolved(hit)
 
 @export var attack_cooldown_time := 1.0
 @export var hit_range := 45.0
+@export var unit_bonus := Stats.new(0, 2)
 
 var _target : Unit
 var root_unit : Unit

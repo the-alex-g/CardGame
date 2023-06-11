@@ -188,6 +188,7 @@ func _on_targeting_area_updated_target_in_range(is_target_in_range:bool)->void:
 
 func _add_captain(captain:Captain)->void:
 	_instance_captain(captain)
+	_apply_captain_bonus(captain.unit_bonus)
 	_targeting_area.aquired_new_target.connect(Callable(captain, "_on_unit_targeting_update_target"))
 
 
@@ -196,3 +197,8 @@ func _instance_captain(captain:Captain)->void:
 	captain.root_unit = self
 	_captain = captain
 	add_child(captain)
+
+
+func _apply_captain_bonus(unit_bonus:Stats)->void:
+	for soldier in _get_soldiers():
+		soldier.captain_bonus = unit_bonus

@@ -3,10 +3,12 @@ extends Node2D
 
 signal shoot(ammo, from)
 
-@export var stats := Stats.new(0, 0, 0, 0, 0, DiceCombiner.new([8], 0))
+@export var stats := Stats.new(8, 0, 0, 0, 0, DiceCombiner.new([8], 0))
 @export_enum("Melee", "Ranged") var soldier_type := "Melee"
 
 var attack : Attack : get = _get_attack
+var captain_bonus : Stats : set = _set_captain_bonus
+
 @export var color := Color.BLUE
 
 
@@ -37,3 +39,8 @@ func _shoot()->Ammo:
 	return ammo
 
 
+func _set_captain_bonus(value:Stats)->void:
+	if not captain_bonus == null:
+		stats.subtract(captain_bonus)
+	captain_bonus = value
+	stats.add(captain_bonus)
