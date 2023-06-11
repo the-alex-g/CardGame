@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://c75ul6ulpjtar"]
+
+[ext_resource type="Script" path="res://resources/targeting/hit_area.gd" id="1_lg1gm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ww04k"]
+
+[node name="HitArea" type="Area2D"]
+script = ExtResource("1_lg1gm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ww04k")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

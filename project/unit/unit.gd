@@ -62,9 +62,10 @@ func _populate_unit()->void:
 
 func _instance_soldier(soldier_position:Vector2)->void:
 	# add a soldier
-	var soldier := Soldier.new() if unit_type == "Melee" else RangedSoldier.new()
+	var soldier := Soldier.new()
 	if unit_type == "Ranged":
 		soldier.shoot.connect(Callable(self, "_on_soldier_shoot"))
+	soldier.soldier_type = unit_type
 	soldier.position = soldier_position
 	soldier.color = color
 	_soldier_container.add_child(soldier)
@@ -152,7 +153,7 @@ func _get_soldier_count()->int:
 	# I admit I haven't tried it.
 	var soldiers := 0
 	for soldier in _get_soldiers():
-		if not soldier.is_queued_for_deletion():
+		if soldier.visible:
 			soldiers += 1
 	return soldiers
 
