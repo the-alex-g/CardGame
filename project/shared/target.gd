@@ -8,7 +8,11 @@ signal died
 var is_dead := false : set = _set_is_dead
 
 
-func damage(attack_array:Array)->void:
+func _ready()->void:
+	TargetTracker.add_target(self)
+
+
+func damage(_attack_array:Array)->void:
 	pass
 
 
@@ -17,3 +21,4 @@ func _set_is_dead(value:bool)->void:
 		is_dead = true
 		died.emit()
 		queue_free()
+	is_dead = value

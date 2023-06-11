@@ -10,7 +10,6 @@ const FLEE_DISTANCE := 100
 @export var speed := 150.0
 @export var attack_delay_time := 1.0
 @export var color := Color.BLUE
-@export var detection_radius := 1024.0
 @export var hit_radius := 45.0
 
 @export_category("Unit Type")
@@ -22,18 +21,21 @@ var _is_target_in_range := false : set = _set_is_target_in_range
 
 @onready var _soldier_container : Node2D = $Soldiers
 @onready var _attack_delay_timer : Timer = $AttackDelayTimer
-@onready var _targeting_area : TargetingArea = $TargetingArea
+@onready var _targeting_system : TargetingSystem = $TargetingSystem
 
 
 func _ready()->void:
-	_update_targeting_area()
+	_update_targeting_system()
 	_populate_unit()
 	_add_captain(load("res://soldier/captain/captain.tscn").instantiate())
+	super._ready()
 
 
 func _process(delta:float)->void:
 	if is_dead:
 		return
+	
+	_targeting_system.find_new_target()
 	
 	if _target == null:
 		return
@@ -47,10 +49,9 @@ func _process(delta:float)->void:
 				#_move_away_from_target(delta)
 
 
-func _update_targeting_area()->void:
-	_targeting_area.hit_range = hit_radius
-	_targeting_area.detection_range = detection_radius
-	_targeting_area.team_index = team_index
+func _update_targeting_system()->void:
+	_targeting_system.hit_range = hit_radius
+	_targeting_system.team_index = team_index
 
 
 func _populate_unit()->void:
@@ -162,14 +163,14 @@ func _get_soldier_count()->int:
 	return _get_soldiers().size()
 
 
-func _on_targeting_area_aquired_new_target(new_target:Target)->void:
+func _on_targeting_system_aquired_new_target(new_target:Target)->void:
 	if is_dead:
 		return
 	
 	_target = new_target
 
 
-func _on_targeting_area_updated_target_in_range(is_target_in_range:bool)->void:
+func _on_targeting_system_updated_target_in_range(is_target_in_range:bool)->void:
 	if is_dead:
 		return
 	
@@ -179,7 +180,7 @@ func _on_targeting_area_updated_target_in_range(is_target_in_range:bool)->void:
 func _add_captain(captain:Captain)->void:
 	_instance_captain(captain)
 	_apply_captain_bonus(captain.unit_bonus)
-	_targeting_area.aquired_new_target.connect(Callable(captain, "_on_unit_targeting_update_target"))
+	_targeting_system.aquired_new_target.connect(Callable(captain, "_on_unit_targeting_update_target"))
 
 
 func _instance_captain(captain:Captain)->void:

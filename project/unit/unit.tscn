@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://xgfxsdir034"]
 
 [ext_resource type="Script" path="res://unit/unit.gd" id="1_faclc"]
-[ext_resource type="PackedScene" uid="uid://c0flmbctes8js" path="res://shared/resources/targeting/targeting_area.tscn" id="2_po14y"]
+[ext_resource type="PackedScene" uid="uid://c0flmbctes8js" path="res://shared/targeting/targeting_system.tscn" id="2_po14y"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vyote"]
 radius = 20.0
@@ -12,12 +12,12 @@ script = ExtResource("1_faclc")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_vyote")
 
-[node name="TargetingArea" parent="." instance=ExtResource("2_po14y")]
+[node name="TargetingSystem" parent="." instance=ExtResource("2_po14y")]
 
 [node name="Soldiers" type="Node2D" parent="."]
 
 [node name="AttackDelayTimer" type="Timer" parent="."]
 
-[connection signal="aquired_new_target" from="TargetingArea" to="." method="_on_targeting_area_aquired_new_target"]
-[connection signal="updated_target_in_range" from="TargetingArea" to="." method="_on_targeting_area_updated_target_in_range"]
+[connection signal="aquired_new_target" from="TargetingSystem" to="." method="_on_targeting_system_aquired_new_target"]
+[connection signal="updated_target_in_range" from="TargetingSystem" to="." method="_on_targeting_system_updated_target_in_range"]
 [connection signal="timeout" from="AttackDelayTimer" to="." method="_on_attack_delay_timer_timeout"]
