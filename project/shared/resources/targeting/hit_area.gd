@@ -3,7 +3,7 @@ extends Area2D
 
 signal updated_target_in_range(is_target_in_range)
 
-var target : Unit : set = _set_target
+var target : Target : set = _set_target
 var hit_range := 0.0 : set = _set_hit_range
 
 @onready var _collision_shape : CollisionShape2D = $CollisionShape2D
@@ -43,10 +43,10 @@ func _get_circle_shape(radius:float)->CircleShape2D:
 	return shape
 
 
-func _set_target(value:Unit)->void:
+func _set_target(value:Target)->void:
 	target = value
 	_check_hit_area_for_target()
 
 
-func _on_targeting_area_aquired_new_target(new_target:Unit)->void:
+func _on_targeting_area_aquired_new_target(new_target:Target)->void:
 	_set_target(new_target)

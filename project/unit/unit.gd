@@ -1,5 +1,5 @@
 class_name Unit
-extends CharacterBody2D
+extends Target
 
 signal died
 signal ranged_attack_ended(hit)
@@ -8,7 +8,6 @@ const FLEE_DISTANCE := 100
 
 @export_category("Unit")
 @export var unit_size := 7
-@export var team_index := 0
 @export var speed := 150.0
 @export var attack_delay_time := 1.0
 @export var color := Color.BLUE
@@ -18,10 +17,9 @@ const FLEE_DISTANCE := 100
 @export_category("Unit Type")
 @export_enum("Melee", "Ranged") var unit_type := "Melee"
 
-var _target : Unit
+var _target : Target
 var _captain : Captain
 var _is_target_in_range := false : set = _set_is_target_in_range
-var is_dead := false : set = _set_is_dead
 
 @onready var _soldier_container : Node2D = $Soldiers
 @onready var _attack_delay_timer : Timer = $AttackDelayTimer
@@ -117,7 +115,7 @@ func _get_soldiers()->Array:
 func _set_is_dead(value:bool)->void:
 	if value:
 		_attack_delay_timer.stop()
-	is_dead = value
+	super._set_is_dead(value)
 
 
 func _set_is_target_in_range(value:bool)->void:
@@ -172,7 +170,7 @@ func _die()->void:
 		queue_free()
 
 
-func _on_targeting_area_aquired_new_target(new_target:Unit)->void:
+func _on_targeting_area_aquired_new_target(new_target:Target)->void:
 	if is_dead:
 		return
 	

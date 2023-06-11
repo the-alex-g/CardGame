@@ -7,7 +7,7 @@ signal ranged_attack_resolved(hit)
 @export var hit_range := 45.0
 @export var unit_bonus := Stats.new(0, 2)
 
-var _target : Unit
+var _target : Target
 var root_unit : Unit
 
 @onready var _attack_cooldown_timer : Timer = $AttackCooldownTimer
@@ -18,7 +18,7 @@ func _ready():
 	_hit_area.hit_range = hit_range
 
 
-func _on_unit_targeting_update_target(new_target:Unit)->void:
+func _on_unit_targeting_update_target(new_target:Target)->void:
 	_target = new_target
 	_hit_area.target = _target
 

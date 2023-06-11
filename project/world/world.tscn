@@ -13,12 +13,12 @@ position = Vector2(257, 473)
 
 [node name="Unit2" parent="." instance=ExtResource("1_wyyk4")]
 position = Vector2(696, 159)
-team_index = 1
 color = Color(0.627451, 0, 0.270588, 1)
+team_index = 1
 
 [node name="Unit" parent="." instance=ExtResource("1_wyyk4")]
 position = Vector2(878, 417)
-team_index = 1
 color = Color(0.501961, 0, 0.666667, 1)
 hit_radius = 700.0
 unit_type = "Ranged"
+team_index = 1
