@@ -1,7 +1,6 @@
 class_name Unit
 extends Target
 
-signal died
 signal ranged_attack_ended(hit)
 
 const FLEE_DISTANCE := 100
@@ -154,20 +153,13 @@ func damage(attack_array:Array)->void:
 		elif _get_soldier_count() > 0:
 			_get_soldier().deal_damage(attack)
 		if _get_soldier_count() == 0 and _captain == null:
-			_die()
+			_set_is_dead(true)
 			break
 
 
 func _get_soldier_count()->int:
 	# returns the number of not-dead soldiers
 	return _get_soldiers().size()
-
-
-func _die()->void:
-	if not is_dead:
-		_set_is_dead(true)
-		died.emit()
-		queue_free()
 
 
 func _on_targeting_area_aquired_new_target(new_target:Target)->void:

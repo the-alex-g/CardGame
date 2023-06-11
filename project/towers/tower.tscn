@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdh15jqfi0hyn"]
+
+[ext_resource type="Script" path="res://towers/tower.gd" id="1_5acbk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f0rvp"]
+radius = 30.0
+
+[node name="Tower" type="CharacterBody2D"]
+script = ExtResource("1_5acbk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_f0rvp")

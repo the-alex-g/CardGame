@@ -1,24 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://bu3vngbou6wmj"]
+[gd_scene load_steps=3 format=3 uid="uid://bu3vngbou6wmj"]
 
 [ext_resource type="PackedScene" uid="uid://xgfxsdir034" path="res://unit/unit.tscn" id="1_wyyk4"]
+[ext_resource type="PackedScene" uid="uid://bdh15jqfi0hyn" path="res://towers/tower.tscn" id="2_dymgq"]
 
 [node name="World" type="Node2D"]
 
-[node name="Unit3" parent="." instance=ExtResource("1_wyyk4")]
+[node name="Unit" parent="." instance=ExtResource("1_wyyk4")]
 position = Vector2(221, 235)
 color = Color(0.203922, 0.392157, 0.0784314, 1)
 
-[node name="Unit4" parent="." instance=ExtResource("1_wyyk4")]
-position = Vector2(257, 473)
-
-[node name="Unit2" parent="." instance=ExtResource("1_wyyk4")]
-position = Vector2(696, 159)
-color = Color(0.627451, 0, 0.270588, 1)
+[node name="Tower" parent="." instance=ExtResource("2_dymgq")]
+position = Vector2(702, 162)
 team_index = 1
 
-[node name="Unit" parent="." instance=ExtResource("1_wyyk4")]
-position = Vector2(878, 417)
-color = Color(0.501961, 0, 0.666667, 1)
-hit_radius = 700.0
-unit_type = "Ranged"
+[node name="Unit2" parent="." instance=ExtResource("1_wyyk4")]
+position = Vector2(645, 542)
 team_index = 1
