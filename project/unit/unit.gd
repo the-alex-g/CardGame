@@ -19,6 +19,7 @@ const FLEE_DISTANCE := 100
 @export_enum("Melee", "Ranged") var unit_type := "Melee"
 
 var _target : Unit
+var _captain : Captain
 var _is_target_in_range := false : set = _set_is_target_in_range
 var is_dead := false : set = _set_is_dead
 
@@ -30,6 +31,7 @@ var is_dead := false : set = _set_is_dead
 func _ready()->void:
 	_update_targeting_area()
 	_populate_unit()
+	_add_captain(load("res://soldier/captain/captain.tscn").instantiate())
 
 
 func _process(delta:float)->void:
@@ -44,7 +46,8 @@ func _process(delta:float)->void:
 			_move_towards_target(delta)
 		else:
 			if unit_type == "Ranged" and global_position.distance_squared_to(_target.global_position) < pow(FLEE_DISTANCE, 2):
-				_move_away_from_target(delta)
+				pass
+				#_move_away_from_target(delta)
 
 
 func _update_targeting_area()->void:
@@ -104,7 +107,11 @@ func _get_soldier()->Soldier:
 
 
 func _get_soldiers()->Array:
-	return _soldier_container.get_children()
+	var soldiers := []
+	for soldier in _soldier_container.get_children():
+		if soldier.visible:
+			soldiers.append(soldier)
+	return soldiers
 
 
 func _set_is_dead(value:bool)->void:
@@ -126,12 +133,16 @@ func _on_attack_delay_timer_timeout()->void:
 
 
 func _on_soldier_shoot(ammo:Ammo, from:Vector2)->void:
+	_instance_ammunition(ammo, from)
+	var hit : bool = await ammo.ended
+	emit_signal("ranged_attack_ended", hit)
+
+
+func _instance_ammunition(ammo:Ammo, from:Vector2)->void:
 	ammo.global_position = from
 	ammo.direction = get_angle_to(_target.global_position)
 	ammo.bodies_to_ignore.append(self)
-	get_parent().add_child(ammo)
-	var hit : bool = await ammo.ended
-	emit_signal("ranged_attack_ended", hit)
+	get_tree().current_scene.add_child(ammo)
 
 
 func damage(attack_array:Array)->void:
@@ -140,22 +151,18 @@ func damage(attack_array:Array)->void:
 		return
 	
 	for attack in attack_array:
-		_get_soldier().deal_damage(attack)
-		if _get_soldier_count() == 0:
+		if _get_soldier_count() == 0 and _captain != null:
+			_captain.deal_damage(attack)
+		elif _get_soldier_count() > 0:
+			_get_soldier().deal_damage(attack)
+		if _get_soldier_count() == 0 and _captain == null:
 			_die()
 			break
 
 
 func _get_soldier_count()->int:
 	# returns the number of not-dead soldiers
-	# doing a simple get_child_count (probably) won't work because
-	# it (probably) doesn't account for the queued_for_deletion soldiers.
-	# I admit I haven't tried it.
-	var soldiers := 0
-	for soldier in _get_soldiers():
-		if soldier.visible:
-			soldiers += 1
-	return soldiers
+	return _get_soldiers().size()
 
 
 func _die()->void:
@@ -177,3 +184,15 @@ func _on_targeting_area_updated_target_in_range(is_target_in_range:bool)->void:
 		return
 	
 	_set_is_target_in_range(is_target_in_range)
+
+
+func _add_captain(captain:Captain)->void:
+	_instance_captain(captain)
+	_targeting_area.aquired_new_target.connect(Callable(captain, "_on_unit_targeting_update_target"))
+
+
+func _instance_captain(captain:Captain)->void:
+	_get_soldiers()[0].hide()
+	captain.root_unit = self
+	_captain = captain
+	add_child(captain)

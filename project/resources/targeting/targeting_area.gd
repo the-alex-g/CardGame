@@ -18,10 +18,7 @@ func _is_closer_than_target(point:Vector2)->bool:
 	if _target == null:
 		return true
 	else:
-		if global_position.distance_squared_to(point) < global_position.distance_squared_to(_target.global_position):
-			return true
-		else:
-			return false
+		return global_position.distance_squared_to(point) < global_position.distance_squared_to(_target.global_position)
 
 
 func _on_target_died()->void:
@@ -73,7 +70,6 @@ func _get_circle_shape(radius:float)->CircleShape2D:
 
 
 func _set_hit_range(value:float)->void:
-	print(value)
 	_hit_area.hit_range = value
 
 

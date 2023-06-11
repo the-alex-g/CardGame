@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckugrsb48ouyj"]
+
+[ext_resource type="Script" path="res://soldier/captain/captain.gd" id="1_74nr5"]
+[ext_resource type="PackedScene" uid="uid://c75ul6ulpjtar" path="res://resources/targeting/hit_area.tscn" id="2_0rdpd"]
+
+[node name="Captain" type="Node2D"]
+script = ExtResource("1_74nr5")
+color = Color(0, 0, 0, 1)
+
+[node name="HitArea" parent="." instance=ExtResource("2_0rdpd")]
+
+[node name="AttackCooldownTimer" type="Timer" parent="."]
+
+[connection signal="hidden" from="." to="." method="_on_hidden"]
+[connection signal="shoot" from="." to="." method="_on_shoot"]
+[connection signal="updated_target_in_range" from="HitArea" to="." method="_on_hit_area_updated_target_in_range"]
+[connection signal="timeout" from="AttackCooldownTimer" to="." method="_on_attack_cooldown_timer_timeout"]

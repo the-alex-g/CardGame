@@ -11,7 +11,7 @@ signal shoot(ammo, from)
 @export_enum("Melee", "Ranged") var soldier_type := "Melee"
 
 var attack : Attack : get = _get_attack
-var color := Color.BLUE
+@export var color := Color.BLUE
 
 
 func _draw()->void:
