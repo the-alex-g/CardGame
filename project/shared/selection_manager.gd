@@ -1,17 +1,17 @@
 extends Node
 
-enum ObjectTypes {NONE, TOWER, UNIT, CAPTAIN}
+enum ObjectTypes {NONE, TOWER, UNIT, CAPTAIN, SPELL}
 
-var object : Node2D : set = _set_object
+var object : Node : set = _set_object
 var selected_object_type : int : get = _get_selected_object_type
 var block_selection := false
 
 
 func _ready()->void:
-	object = load("res://towers/tower.tscn").instantiate()
+	object = Spell.new()
 
 
-func _set_object(value:Node2D)->void:
+func _set_object(value:Node)->void:
 	object = value
 	if object != null:
 		object.ready.connect(Callable(self, "_on_object_tree_entered"), CONNECT_ONE_SHOT)
@@ -28,5 +28,7 @@ func _get_selected_object_type()->int:
 		return ObjectTypes.UNIT
 	elif object is Captain:
 		return ObjectTypes.CAPTAIN
+	elif object is Spell:
+		return ObjectTypes.SPELL
 	else:
 		return ObjectTypes.NONE

@@ -8,6 +8,8 @@ extends Target
 var _waiting_for_tower_spawn := false : set = _set_waiting_for_tower_spawn
 var _tower_spawn_circle : PackedVector2Array
 
+@onready var _max_health := health
+
 
 func _ready()->void:
 	for i in 33:
@@ -20,6 +22,12 @@ func damage(attack_array:Array)->void:
 		health -= attack.damage
 	if health <= 0:
 		_set_is_dead(true)
+
+
+func heal(heal_array:Array)->void:
+	print("tower healed")
+	for amount in heal_array:
+		health = min(health + amount, _max_health)
 
 
 func _draw()->void:
@@ -35,6 +43,8 @@ func _on_selectable_clicked()->void:
 				_locate_tower()
 			SelectionManager.ObjectTypes.UNIT:
 				_spawn_unit()
+			SelectionManager.ObjectTypes.SPELL:
+				_apply_spell(SelectionManager.object)
 
 
 func _locate_tower()->void:
@@ -63,3 +73,10 @@ func _set_waiting_for_tower_spawn(value:bool)->void:
 	_waiting_for_tower_spawn = value
 	SelectionManager.block_selection = value
 	queue_redraw()
+
+
+func _apply_spell(spell:Spell)->void:
+	if spell.target_type == Spell.TargetTypes.TOWER:
+		add_child(spell)
+	else:
+		print("invalid target")

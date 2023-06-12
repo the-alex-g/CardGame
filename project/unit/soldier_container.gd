@@ -10,11 +10,8 @@ var color : Color
 var attacks : Array : get = _get_attacks
 var _captain : Captain
 
+@onready var _parent : Unit = get_parent()
 @onready var _soldiers : Node2D = $Soldiers
-
-
-func _ready()->void:
-	assert(get_parent() is Unit, "There is a SoldierContainer who's parent is not a Unit")
 
 
 func damage(attack_array:Array)->void:
@@ -26,6 +23,25 @@ func damage(attack_array:Array)->void:
 		if _get_soldier_count() == 0 and _captain == null:
 			dead.emit()
 			break
+
+
+func heal(heal_array:Array)->void:
+	for heal_amount in heal_array:
+		for soldier in _get_soldiers():
+			if soldier.stats.health < soldier.max_health:
+				soldier.heal(heal_amount)
+				break
+
+
+func resurrect(number:int, percent_health:float)->void:
+	for _i in number:
+		for soldier in _get_soldiers(false):
+			# this next if statement prevents the soldier that the captain replaces from reanimating
+			if not (_soldiers.get_child(0) == soldier and _captain != null):
+				if not soldier.visible:
+					soldier.stats.health = soldier.max_health * percent_health
+					soldier.show()
+					break
 
 
 func populate_unit()->void:
@@ -62,8 +78,8 @@ func _on_soldier_shoot(ammo:Ammo, from:Vector2)->void:
 
 func _instance_ammunition(ammo:Ammo, from:Vector2)->void:
 	ammo.global_position = from
-	ammo.direction = get_parent().angle_to_target
-	ammo.bodies_to_ignore.append(get_parent())
+	ammo.direction = _parent.angle_to_target
+	ammo.bodies_to_ignore.append(_parent)
 	get_tree().current_scene.add_child(ammo)
 
 
@@ -71,12 +87,15 @@ func _get_soldier()->Soldier:
 	return _get_soldiers().pick_random()
 
 
-func _get_soldiers()->Array:
-	var soldiers := []
-	for soldier in _soldiers.get_children():
-		if soldier.visible:
-			soldiers.append(soldier)
-	return soldiers
+func _get_soldiers(live := true)->Array:
+	if live:
+		var soldiers := []
+		for soldier in _soldiers.get_children():
+			if soldier.visible:
+				soldiers.append(soldier)
+		return soldiers
+	else:
+		return _soldiers.get_children()
 
 
 func _get_soldier_count()->int:
@@ -90,8 +109,8 @@ func add_captain(captain:Captain)->void:
 
 
 func _instance_captain(captain:Captain)->void:
-	_soldiers.get_children()[0].hide()
-	captain.root_unit = get_parent()
+	_soldiers.get_child(0).hide()
+	captain.root_unit = _parent
 	if _captain != null:
 		_captain.queue_free()
 	_captain = captain

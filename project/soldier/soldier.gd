@@ -4,12 +4,13 @@ extends Node2D
 signal shoot(ammo, from)
 
 @export var stats := Stats.new(8, 0, 0, 0, 0, DiceCombiner.new([8], 0))
+@export var color := Color.BLUE
 @export_enum("Melee", "Ranged") var soldier_type := "Melee"
 
 var attack : Attack : get = _get_attack
 var captain_bonus : Stats : set = _set_captain_bonus
 
-@export var color := Color.BLUE
+@onready var max_health := stats.health
 
 
 func _draw()->void:
@@ -22,6 +23,10 @@ func deal_damage(incoming_attack:Attack)->void:
 		stats.health -= incoming_attack.damage
 		if stats.health <= 0:
 			hide()
+
+
+func heal(amount:int)->void:
+	stats.health = min(stats.health + amount, max_health)
 
 
 func _get_attack()->Attack:

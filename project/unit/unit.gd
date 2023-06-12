@@ -109,6 +109,14 @@ func damage(attack_array:Array)->void:
 	_soldier_container.damage(attack_array)
 
 
+func heal(heal_array:Array)->void:
+	_soldier_container.heal(heal_array)
+
+
+func resurrect(number:int, percent_health:float)->void:
+	_soldier_container.resurrect(number, percent_health)
+
+
 func _get_angle_to_target()->float:
 	return get_angle_to(_target.global_position)
 
@@ -131,6 +139,8 @@ func _on_selectable_clicked()->void:
 	match SelectionManager.selected_object_type:
 		SelectionManager.ObjectTypes.CAPTAIN:
 			_add_captain(SelectionManager.object)
+		SelectionManager.ObjectTypes.SPELL:
+			_apply_spell(SelectionManager.object)
 
 
 func _add_captain(captain:Captain)->void:
@@ -140,3 +150,11 @@ func _add_captain(captain:Captain)->void:
 
 func _on_soldier_container_dead()->void:
 	_set_is_dead(true)
+
+
+func _apply_spell(spell:Spell)->void:
+	if spell.target_type == Spell.TargetTypes.UNIT:
+		add_child(spell)
+		print("spell happened")
+	else:
+		print("invalid target")

@@ -16,13 +16,13 @@ func damage(_attack_array:Array)->void:
 	pass
 
 
+func heal(_heal_array:Array)->void:
+	pass
+
+
 func _set_is_dead(value:bool)->void:
 	if not is_dead:
 		is_dead = true
 		died.emit()
 		queue_free()
 	is_dead = value
-
-
-func _resolve_click()->void:
-	pass
