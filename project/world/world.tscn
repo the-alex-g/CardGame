@@ -5,12 +5,15 @@
 
 [node name="World" type="Node2D"]
 
-[node name="Tower" parent="." instance=ExtResource("2_dymgq")]
-position = Vector2(702, 162)
-team_index = 1
-
 [node name="Unit" parent="." instance=ExtResource("2_ul3bs")]
+team_index = 1
 
 [node name="Unit2" parent="." instance=ExtResource("2_ul3bs")]
 position = Vector2(257, 375)
-team_index = 1
+
+[node name="Tower" parent="." instance=ExtResource("2_dymgq")]
+position = Vector2(599, 149)
+health = 30
+tower_spawn_radius = 300
+tower_radius = 30
+team_index = 0

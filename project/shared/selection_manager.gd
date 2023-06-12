@@ -4,10 +4,11 @@ enum ObjectTypes {NONE, TOWER, UNIT, CAPTAIN}
 
 var object : Node2D : set = _set_object
 var selected_object_type : int : get = _get_selected_object_type
+var block_selection := false
 
 
 func _ready()->void:
-	object = load("res://towers/tower.tscn").instantiate()
+	object = load("res://unit/unit.tscn").instantiate()
 
 
 func _set_object(value:Node2D)->void:

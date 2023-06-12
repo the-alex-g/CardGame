@@ -37,11 +37,12 @@ func _set_is_dead(value:bool)->void:
 
 
 func _resolve_click()->void:
-	print("click")
+	pass
 
 
 func _on_mouse_entered()->void:
-	_focused = true
+	if not SelectionManager.block_selection:
+		_focused = true
 
 
 func _on_mouse_exited():
