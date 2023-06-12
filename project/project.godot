@@ -18,3 +18,4 @@ config/icon="res://icon.svg"
 [autoload]
 
 TargetTracker="*res://shared/targeting/target_tracker.gd"
+SelectionManager="*res://shared/selection_manager.gd"
