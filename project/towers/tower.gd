@@ -25,7 +25,6 @@ func damage(attack_array:Array)->void:
 
 
 func heal(heal_array:Array)->void:
-	print("tower healed")
 	for amount in heal_array:
 		health = min(health + amount, _max_health)
 
@@ -76,7 +75,7 @@ func _set_waiting_for_tower_spawn(value:bool)->void:
 
 
 func _apply_spell(spell:Spell)->void:
-	if spell.target_type == Spell.TargetTypes.TOWER:
+	if spell.target_towers:
 		add_child(spell)
 	else:
 		print("invalid target")

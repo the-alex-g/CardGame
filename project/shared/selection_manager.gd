@@ -8,7 +8,7 @@ var block_selection := false
 
 
 func _ready()->void:
-	object = Spell.new()
+	object = load("res://soldier/captain/captain.tscn").instantiate()
 
 
 func _set_object(value:Node)->void:

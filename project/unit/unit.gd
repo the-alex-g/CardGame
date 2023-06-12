@@ -5,7 +5,7 @@ const FLEE_DISTANCE := 100
 
 @export_category("Unit")
 @export var unit_size := 7
-@export var speed := 150.0
+@export var speed := 50.0
 @export var attack_delay_time := 1.0
 @export var color := Color.BLUE
 @export var hit_radius := 30.0
@@ -25,7 +25,6 @@ var _is_target_in_range := false : set = _set_is_target_in_range
 func _ready()->void:
 	_update_targeting_system()
 	_update_soldier_container()
-	_add_captain(load("res://soldier/captain/captain.tscn").instantiate())
 	super._ready()
 
 
@@ -140,11 +139,12 @@ func _on_selectable_clicked()->void:
 		SelectionManager.ObjectTypes.CAPTAIN:
 			_add_captain(SelectionManager.object)
 		SelectionManager.ObjectTypes.SPELL:
-			_apply_spell(SelectionManager.object)
+			apply_spell(SelectionManager.object)
 
 
 func _add_captain(captain:Captain)->void:
 	_targeting_system.aquired_new_target.connect(Callable(captain, "_on_unit_targeting_update_target"))
+	captain.set_deferred("target", _target)
 	_soldier_container.add_captain(captain)
 
 
@@ -152,9 +152,8 @@ func _on_soldier_container_dead()->void:
 	_set_is_dead(true)
 
 
-func _apply_spell(spell:Spell)->void:
-	if spell.target_type == Spell.TargetTypes.UNIT:
+func apply_spell(spell:Spell)->void:
+	if spell.target_units:
 		add_child(spell)
-		print("spell happened")
 	else:
 		print("invalid target")

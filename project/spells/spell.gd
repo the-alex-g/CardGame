@@ -1,28 +1,32 @@
 class_name Spell
 extends Node
 
-enum TargetTypes {UNIT, TOWER}
 enum Type {HEAL, DAMAGE, RESURRECT}
 
-@export var target_type : TargetTypes = TargetTypes.UNIT
+@export var target_towers := false
+@export var target_units := false
+@export var captain_spell := false
 @export var type : Type = Type.RESURRECT
 # a heal spell needs a "targets" field and a "amount" field
 # a damage spell needs a "targets" field and a "damage" field
 # a resurrect spell needs a "targets" field and a "percent_health" field
-@export var info := {"targets":7, "percent_health":1.0}
+@export var info := {"targets":7}
 
-@onready var _parent : Target = get_parent()
+var copy : Spell : get = _get_copy
+
+@onready var _parent : Target = null if captain_spell else get_parent()
 
 
 func _ready()->void:
-	match type:
-		Type.HEAL:
-			_resolve_healing()
-		Type.DAMAGE:
-			_resolve_damage()
-		Type.RESURRECT:
-			_resolve_resurrection()
-	queue_free()
+	if not captain_spell:
+		match type:
+			Type.HEAL:
+				_resolve_healing()
+			Type.DAMAGE:
+				_resolve_damage()
+			Type.RESURRECT:
+				_resolve_resurrection()
+		queue_free()
 
 
 func _resolve_healing()->void:
@@ -42,3 +46,9 @@ func _resolve_damage()->void:
 func _resolve_resurrection()->void:
 	if _parent is Unit:
 		_parent.resurrect(info.targets, info.percent_health)
+
+
+func _get_copy()->Spell:
+	var self_copy := self.duplicate()
+	self_copy.captain_spell = false
+	return self_copy

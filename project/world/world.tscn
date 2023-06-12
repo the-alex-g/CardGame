@@ -10,7 +10,7 @@ unit_size = 9
 team_index = 1
 
 [node name="Unit2" parent="." instance=ExtResource("2_ul3bs")]
-position = Vector2(257, 375)
+position = Vector2(739, 358)
 color = Color(1, 0, 0, 1)
 
 [node name="Tower" parent="." instance=ExtResource("2_dymgq")]
