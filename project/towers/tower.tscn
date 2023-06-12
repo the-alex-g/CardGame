@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bdh15jqfi0hyn"]
+[gd_scene load_steps=4 format=3 uid="uid://bdh15jqfi0hyn"]
 
 [ext_resource type="Script" path="res://towers/tower.gd" id="1_5acbk"]
+[ext_resource type="PackedScene" uid="uid://dbldlgbmi56yh" path="res://shared/selectable.tscn" id="2_28bp1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_f0rvp"]
 radius = 30.0
@@ -10,3 +11,7 @@ script = ExtResource("1_5acbk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_f0rvp")
+
+[node name="Selectable" parent="." instance=ExtResource("2_28bp1")]
+
+[connection signal="clicked" from="Selectable" to="." method="_on_selectable_clicked"]

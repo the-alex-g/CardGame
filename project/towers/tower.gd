@@ -1,8 +1,6 @@
 class_name Tower
 extends Target
 
-signal left_mouse_button_pressed
-
 @export var health := 30
 @export var tower_spawn_radius := 300
 @export var tower_radius := 30
@@ -15,13 +13,6 @@ func _ready()->void:
 	for i in 33:
 		_tower_spawn_circle.append(Vector2.RIGHT.rotated(TAU * i / 32) * tower_spawn_radius)
 	super._ready()
-
-
-func _input(event:InputEvent)->void:
-	if event is InputEventMouseButton and event.is_pressed():
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			emit_signal("left_mouse_button_pressed")
-	super._input(event)
 
 
 func damage(attack_array:Array)->void:
@@ -37,7 +28,7 @@ func _draw()->void:
 	draw_circle(Vector2.ZERO, tower_radius, Color.BLANCHED_ALMOND)
 
 
-func _resolve_click()->void:
+func _on_selectable_clicked()->void:
 	if not _waiting_for_tower_spawn:
 		match SelectionManager.selected_object_type:
 			SelectionManager.ObjectTypes.TOWER:
@@ -49,7 +40,7 @@ func _resolve_click()->void:
 func _locate_tower()->void:
 	_set_waiting_for_tower_spawn(true)
 	while _waiting_for_tower_spawn:
-		await left_mouse_button_pressed
+		await $Selectable.clicked
 		_spawn_tower()
 
 

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dpkhmhq5ctckj"]
+
+[ext_resource type="Script" path="res://unit/soldier_container.gd" id="1_cxjsp"]
+
+[node name="SoldierContainer" type="Node2D"]
+script = ExtResource("1_cxjsp")
+
+[node name="Soldiers" type="Node2D" parent="."]

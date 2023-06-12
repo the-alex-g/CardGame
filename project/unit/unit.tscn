@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://xgfxsdir034"]
+[gd_scene load_steps=6 format=3 uid="uid://xgfxsdir034"]
 
 [ext_resource type="Script" path="res://unit/unit.gd" id="1_faclc"]
 [ext_resource type="PackedScene" uid="uid://c0flmbctes8js" path="res://shared/targeting/targeting_system.tscn" id="2_po14y"]
+[ext_resource type="PackedScene" uid="uid://dbldlgbmi56yh" path="res://shared/selectable.tscn" id="3_kuvoy"]
+[ext_resource type="PackedScene" uid="uid://dpkhmhq5ctckj" path="res://unit/soldier_container.tscn" id="3_rg732"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vyote"]
 radius = 20.0
@@ -14,10 +16,14 @@ shape = SubResource("CircleShape2D_vyote")
 
 [node name="TargetingSystem" parent="." instance=ExtResource("2_po14y")]
 
-[node name="Soldiers" type="Node2D" parent="."]
+[node name="SoldierContainer" parent="." instance=ExtResource("3_rg732")]
 
 [node name="AttackDelayTimer" type="Timer" parent="."]
 
+[node name="Selectable" parent="." instance=ExtResource("3_kuvoy")]
+
 [connection signal="aquired_new_target" from="TargetingSystem" to="." method="_on_targeting_system_aquired_new_target"]
 [connection signal="updated_target_in_range" from="TargetingSystem" to="." method="_on_targeting_system_updated_target_in_range"]
+[connection signal="dead" from="SoldierContainer" to="." method="_on_soldier_container_dead"]
 [connection signal="timeout" from="AttackDelayTimer" to="." method="_on_attack_delay_timer_timeout"]
+[connection signal="clicked" from="Selectable" to="." method="_on_selectable_clicked"]

@@ -6,10 +6,12 @@
 [node name="World" type="Node2D"]
 
 [node name="Unit" parent="." instance=ExtResource("2_ul3bs")]
+unit_size = 9
 team_index = 1
 
 [node name="Unit2" parent="." instance=ExtResource("2_ul3bs")]
 position = Vector2(257, 375)
+color = Color(1, 0, 0, 1)
 
 [node name="Tower" parent="." instance=ExtResource("2_dymgq")]
 position = Vector2(599, 149)

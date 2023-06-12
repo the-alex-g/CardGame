@@ -8,8 +8,7 @@ var block_selection := false
 
 
 func _ready()->void:
-	object = load("res://soldier/captain/captain.tscn").instantiate()
-	object.color = Color.RED
+	object = load("res://towers/tower.tscn").instantiate()
 
 
 func _set_object(value:Node2D)->void:
