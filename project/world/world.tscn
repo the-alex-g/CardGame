@@ -13,7 +13,3 @@ position = Vector2(257, 375)
 
 [node name="Tower" parent="." instance=ExtResource("2_dymgq")]
 position = Vector2(599, 149)
-health = 30
-tower_spawn_radius = 300
-tower_radius = 30
-team_index = 0

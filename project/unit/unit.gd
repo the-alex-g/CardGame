@@ -183,11 +183,19 @@ func _add_captain(captain:Captain)->void:
 	_targeting_system.aquired_new_target.connect(Callable(captain, "_on_unit_targeting_update_target"))
 
 
+func _resolve_click()->void:
+	match SelectionManager.selected_object_type:
+		SelectionManager.ObjectTypes.CAPTAIN:
+			_add_captain(SelectionManager.object)
+
+
 func _instance_captain(captain:Captain)->void:
-	_get_soldiers()[0].hide()
+	_soldier_container.get_children()[0].hide()
 	captain.root_unit = self
+	if _captain != null:
+		_captain.queue_free()
 	_captain = captain
-	add_child(captain)
+	add_child(_captain)
 
 
 func _apply_captain_bonus(unit_bonus:Stats)->void:
