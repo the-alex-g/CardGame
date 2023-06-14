@@ -9,6 +9,7 @@ const FLEE_DISTANCE := 100
 @export var attack_delay_time := 1.0
 @export var color := Color.BLUE
 @export var hit_radius := 30.0
+@export var soldier_stats := Stats.new()
 
 @export_category("Unit Type")
 @export_enum("Melee", "Ranged") var unit_type := "Melee"
@@ -54,7 +55,7 @@ func _update_soldier_container()->void:
 	_soldier_container.unit_size = unit_size
 	_soldier_container.unit_type = unit_type
 	_soldier_container.color = color
-	_soldier_container.populate_unit()
+	_soldier_container.populate_unit(soldier_stats)
 
 
 func _move_towards_target(delta:float)->void:

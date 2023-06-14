@@ -44,16 +44,16 @@ func resurrect(number:int, percent_health:float)->void:
 					break
 
 
-func populate_unit()->void:
+func populate_unit(soldier_stats:Stats)->void:
 	# add all the soldiers in the proper formation.
-	_instance_soldier(Vector2.ZERO)
+	_instance_soldier(soldier_stats, Vector2.ZERO)
 	for i in unit_size - 1:
-		_instance_soldier(Vector2.RIGHT.rotated(TAU * i / (unit_size - 1) ) * 15.0)
+		_instance_soldier(soldier_stats, Vector2.RIGHT.rotated(TAU * i / (unit_size - 1) ) * 15.0)
 
 
-func _instance_soldier(soldier_position:Vector2)->void:
+func _instance_soldier(soldier_stats:Stats, soldier_position:Vector2)->void:
 	# add a soldier
-	var soldier := Soldier.new()
+	var soldier := Soldier.new(soldier_stats)
 	if unit_type == "Ranged":
 		soldier.shoot.connect(Callable(self, "_on_soldier_shoot"))
 	soldier.soldier_type = unit_type

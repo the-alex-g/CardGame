@@ -13,5 +13,6 @@ script = ExtResource("1_5acbk")
 shape = SubResource("CircleShape2D_f0rvp")
 
 [node name="Selectable" parent="." instance=ExtResource("2_28bp1")]
+radius = 30.0
 
 [connection signal="clicked" from="Selectable" to="." method="_on_selectable_clicked"]

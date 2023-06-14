@@ -9,13 +9,19 @@ enum Type {ATTACK, BOOST_SPELL, OFFENSE_SPELL}
 @export var hit_range := 45.0
 @export var unit_bonus := Stats.new(0, 2)
 @export var type : Type
-@export var spell := Spell.new()
+@export var spell := Spell.new(false, true, Spell.Type.DAMAGE, {"targets":1, "damage":4}, true)
 
 var target : Target : set = _set_target
 var root_unit : Unit
 
 @onready var _attack_cooldown_timer : Timer = $AttackCooldownTimer
 @onready var _hit_area : HitArea = $HitArea
+
+
+func _init()->void:
+	# this function is, for some unfathomable reason, necessary
+	# in order to instance this scene in the scriptorium.
+	pass
 
 
 func _ready():

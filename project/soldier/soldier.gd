@@ -13,6 +13,10 @@ var captain_bonus : Stats : set = _set_captain_bonus
 @onready var max_health := stats.health
 
 
+func _init(soldier_stats:Stats)->void:
+	stats = soldier_stats
+
+
 func _draw()->void:
 	draw_circle(Vector2.ZERO, 5.0, color)
 

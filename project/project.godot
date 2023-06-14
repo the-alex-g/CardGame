@@ -19,3 +19,4 @@ config/icon="res://icon.svg"
 
 TargetTracker="*res://shared/targeting/target_tracker.gd"
 SelectionManager="*res://shared/selection_manager.gd"
+Scriptorium="*res://shared/scriptorium.gd"

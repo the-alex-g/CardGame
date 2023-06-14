@@ -17,6 +17,14 @@ var copy : Spell : get = _get_copy
 @onready var _parent : Target = null if captain_spell else get_parent()
 
 
+func _init(spell_target_towers:bool, spell_target_units:bool, spell_type:Type, spell_info:Dictionary, spell_captain_spell := false)->void:
+	target_towers = spell_target_towers
+	target_units = spell_target_units
+	type = spell_type
+	info = spell_info
+	captain_spell = spell_captain_spell
+
+
 func _ready()->void:
 	if not captain_spell:
 		match type:

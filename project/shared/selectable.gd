@@ -8,6 +8,10 @@ signal clicked
 var _selected := false
 
 
+func _ready()->void:
+	_set_radius(radius)
+
+
 func _input(event:InputEvent)->void:
 	if not _selected:
 		return
