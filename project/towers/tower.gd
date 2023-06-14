@@ -9,6 +9,7 @@ var _waiting_for_tower_spawn := false : set = _set_waiting_for_tower_spawn
 var _tower_spawn_circle : PackedVector2Array
 
 @onready var _max_health := health
+@onready var _selectable : Selectable = $Selectable
 
 
 func _ready()->void:
@@ -49,7 +50,8 @@ func _on_selectable_clicked()->void:
 func _locate_tower()->void:
 	_set_waiting_for_tower_spawn(true)
 	while _waiting_for_tower_spawn:
-		await $Selectable.clicked
+		await _selectable.clicked
+		_selectable.deselect()
 		_spawn_tower()
 
 

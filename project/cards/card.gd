@@ -1,16 +1,15 @@
 class_name Card
 extends Control
 
-var card_info : Dictionary
+signal played
+signal clicked(card)
+
+var card_info : Dictionary : set = _set_card_info
+var cost : int : get = _get_cost
 var _focused := false
 
 @onready var _title : Label = $VBoxContainer/Title
 @onready var _text : Label = $VBoxContainer/Text
-
-
-func _ready()->void:
-	card_info = Scriptorium.card
-	_update_card_text()
 
 
 func _input(event:InputEvent)->void:
@@ -22,18 +21,33 @@ func _input(event:InputEvent)->void:
 			_clicked()
 
 
+func object_placed()->void:
+	played.emit()
+	queue_free()
+
+
+func select()->void:
+	SelectionManager.object = card_info.object
+	SelectionManager.card_selected = self
+	$ColorRect.show()
+
+
+func _set_card_info(value:Dictionary)->void:
+	card_info = value
+	_update_card_text()
+
+
+func _get_cost()->int:
+	return card_info.cost
+
+
 func _update_card_text()->void:
-	_title.text = card_info.name
+	_title.text = card_info.name + " " + str(_get_cost())
 	_text.text = card_info.text
 
 
 func _clicked()->void:
-	SelectionManager.object = card_info.object
-	SelectionManager.card_selected = self
-
-
-func object_placed()->void:
-	queue_free()
+	clicked.emit(self)
 
 
 func _on_mouse_entered()->void:

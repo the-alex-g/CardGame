@@ -1,17 +1,18 @@
 extends Node
 
-var cards := [
-	#{"type":"spell", "name":"fireball", "info":{"target_towers":false, "target_units":true, "type":Spell.Type.DAMAGE, "spell_info":{"targets":3, "damage":3}}, "text":"deal 3 damage to 3 soldiers"},
-	#{"type":"tower", "name":"tower", "info":{"health":30, "spawn_radius":300, "size":30}, "text":"create a tower with 30 health"},
-	#{"type":"unit", "name":"legion", "info":{"size":7, "unit_type":"Melee", "speed":100.0, "attack_delay":1.0, "hit_radius":30.0, "stats":Stats.new()}, "text":"create a melee unit: size - 7, health - 8, speed - 6, dps - 4"},
-	{"type":"captain", "name":"captain", "info":{"stats":Stats.new(), "attack_type":"Melee", "attack_delay":1.0, "hit_range":30.0, "unit_bonus":Stats.new(), "type":Captain.Type.ATTACK, "spell":null}, "text":"create a melee captain: health - 8, dps - 4, unit gets +1 armor"}
-]
-var card : Dictionary : get = _get_card
+var cards := {
+	"fireball":{"type":"spell", "cost":10, "info":{"target_towers":false, "target_units":true, "type":Spell.Type.DAMAGE, "spell_info":{"targets":3, "damage":3}}, "text":"deal 3 damage to 3 soldiers"},
+	"tower":{"type":"tower", "cost":150, "info":{"health":30, "spawn_radius":300, "size":30}, "text":"create a tower with 30 health"},
+	"legion":{"type":"unit", "cost":100, "info":{"size":7, "unit_type":"Melee", "speed":100.0, "attack_delay":1.0, "hit_radius":30.0, "stats":Stats.new()}, "text":"create a melee unit: size - 7, health - 8, speed - 6, dps - 4"},
+	"captain":{"type":"captain", "cost":50, "info":{"stats":Stats.new(), "attack_type":"Melee", "attack_delay":1.0, "hit_range":30.0, "unit_bonus":Stats.new(), "type":Captain.Type.ATTACK, "spell":null}, "text":"create a melee captain: health - 8, dps - 4, unit gets +1 armor"}
+}
 
 
-func _get_card()->Dictionary:
-	var card_data : Dictionary = cards.pick_random()
-	var card_info_to_return : Dictionary = {"name":card_data.name, "text":card_data.text}
+func get_card(key := "")->Dictionary:
+	if key == "":
+		key = cards.keys().pick_random()
+	var card_data : Dictionary = cards[key]
+	var card_info_to_return : Dictionary = {"name":key, "cost":card_data.cost, "text":card_data.text}
 	match card_data.type:
 		"spell":
 			card_info_to_return["object"] = _get_spell_from_info(card_data.info)

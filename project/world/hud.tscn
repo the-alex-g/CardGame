@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://kyeeqyyxr3wi"]
+
+[ext_resource type="Script" path="res://shared/deck.gd" id="1_jai67"]
+[ext_resource type="Script" path="res://world/hud.gd" id="1_yc4v7"]
+[ext_resource type="PackedScene" uid="uid://bhxvbbba0lam4" path="res://cards/hand_manager.tscn" id="3_gaiic"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_yc4v7")
+
+[node name="Deck" type="Node" parent="."]
+script = ExtResource("1_jai67")
+
+[node name="HandManager" parent="." instance=ExtResource("3_gaiic")]
+
+[node name="Money" type="Label" parent="."]
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="MoneyGainTimer" type="Timer" parent="."]
+wait_time = 0.25
+autostart = true
+
+[connection signal="update_money" from="." to="HandManager" method="_on_hud_update_money"]
+[connection signal="update_hand" from="Deck" to="." method="_on_deck_update_hand"]
+[connection signal="card_played" from="HandManager" to="." method="_on_hand_manager_card_played"]
+[connection signal="timeout" from="MoneyGainTimer" to="." method="_on_money_gain_timer_timeout"]

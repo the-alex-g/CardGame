@@ -20,6 +20,10 @@ func _input(event:InputEvent)->void:
 			clicked.emit()
 
 
+func deselect()->void:
+	_selected = false
+
+
 func _set_radius(value:float)->void:
 	radius = value
 	var shape := CircleShape2D.new()

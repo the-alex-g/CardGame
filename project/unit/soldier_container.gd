@@ -109,12 +109,22 @@ func add_captain(captain:Captain)->void:
 
 
 func _instance_captain(captain:Captain)->void:
+	if _get_soldier_count() < unit_size:
+		_reanimate_edge_soldier()
 	_soldiers.get_child(0).hide()
+	
 	captain.root_unit = _parent
 	if _captain != null:
 		_captain.queue_free()
 	_captain = captain
 	add_child(_captain)
+
+
+func _reanimate_edge_soldier()->void:
+	for soldier in _get_soldiers(false):
+		if not soldier.visible and soldier != _soldiers.get_child(0):
+			soldier.show()
+			break
 
 
 func _apply_captain_bonus(unit_bonus:Stats)->void:

@@ -9,7 +9,7 @@ const FLEE_DISTANCE := 100
 @export var attack_delay_time := 1.0
 @export var color := Color.BLUE
 @export var hit_radius := 30.0
-@export var soldier_stats := Stats.new()
+@export var soldier_stats := Stats.new(8, 0, 0, 0, 0, DiceCombiner.new([8], 0))
 
 @export_category("Unit Type")
 @export_enum("Melee", "Ranged") var unit_type := "Melee"

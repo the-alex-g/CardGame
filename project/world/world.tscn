@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bdh15jqfi0hyn" path="res://towers/tower.tscn" id="2_dymgq"]
 [ext_resource type="PackedScene" uid="uid://xgfxsdir034" path="res://unit/unit.tscn" id="2_ul3bs"]
-[ext_resource type="PackedScene" uid="uid://c3kmpchq2osvn" path="res://cards/card.tscn" id="3_6rh0s"]
+[ext_resource type="PackedScene" uid="uid://kyeeqyyxr3wi" path="res://world/hud.tscn" id="3_3dqhi"]
 
 [node name="World" type="Node2D"]
 
@@ -17,9 +17,4 @@ color = Color(1, 0, 0, 1)
 [node name="Tower" parent="." instance=ExtResource("2_dymgq")]
 position = Vector2(599, 149)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Card" parent="CanvasLayer" instance=ExtResource("3_6rh0s")]
-offset_left = 10.0
-offset_top = 378.0
-offset_right = -1003.0
+[node name="HUD" parent="." instance=ExtResource("3_3dqhi")]
