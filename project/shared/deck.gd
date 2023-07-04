@@ -29,6 +29,10 @@ func draw_to_hand_size()->void:
 	update_hand.emit(_hand)
 
 
+func get_hand()->Array:
+	return _hand
+
+
 func play_card(card:String)->void:
 	_hand.erase(card)
 	_discard.append(card)

@@ -42,9 +42,9 @@ func _on_selectable_clicked()->void:
 			SelectionManager.ObjectTypes.TOWER:
 				_locate_tower()
 			SelectionManager.ObjectTypes.UNIT:
-				_spawn_unit()
+				spawn_unit()
 			SelectionManager.ObjectTypes.SPELL:
-				_apply_spell(SelectionManager.object)
+				apply_spell(SelectionManager.object)
 
 
 func _locate_tower()->void:
@@ -60,14 +60,15 @@ func _spawn_tower()->void:
 	if global_position.distance_squared_to(mouse_position) <= pow(tower_spawn_radius, 2):
 		var tower_to_spawn := SelectionManager.object
 		tower_to_spawn.global_position = mouse_position
-		get_parent().add_child(tower_to_spawn)
+		get_tree().current_scene.instance_tower(tower_to_spawn)
 		_set_waiting_for_tower_spawn(false)
 
 
-func _spawn_unit()->void:
-	var unit_to_spawn := SelectionManager.object
+func spawn_unit(unit:Unit = null)->void:
+	var unit_to_spawn : Unit = SelectionManager.object if unit == null else unit
+	unit_to_spawn.team_index = team_index
 	unit_to_spawn.global_position = global_position + Vector2.RIGHT.rotated(TAU * randf()) * (tower_radius + 30)
-	get_parent().add_child(unit_to_spawn)
+	get_tree().current_scene.instance_unit(unit_to_spawn)
 
 
 func _set_waiting_for_tower_spawn(value:bool)->void:
@@ -76,7 +77,7 @@ func _set_waiting_for_tower_spawn(value:bool)->void:
 	queue_redraw()
 
 
-func _apply_spell(spell:Spell)->void:
+func apply_spell(spell:Spell)->void:
 	if spell.target_towers:
 		add_child(spell)
 	else:

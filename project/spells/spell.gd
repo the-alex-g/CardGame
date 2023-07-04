@@ -11,13 +11,15 @@ enum Type {HEAL, DAMAGE, RESURRECT}
 # a damage spell needs a "targets" field and a "damage" field
 # a resurrect spell needs a "targets" field and a "percent_health" field
 @export var info := {"targets":7}
+@export var benifical := false
 
 var copy : Spell : get = _get_copy
 
 @onready var _parent : Target = null if captain_spell else get_parent()
 
 
-func _init(spell_target_towers:bool, spell_target_units:bool, spell_type:Type, spell_info:Dictionary, spell_captain_spell := false)->void:
+func _init(is_spell_benifical:bool, spell_target_towers:bool, spell_target_units:bool, spell_type:Type, spell_info:Dictionary, spell_captain_spell := false)->void:
+	benifical = is_spell_benifical
 	target_towers = spell_target_towers
 	target_units = spell_target_units
 	type = spell_type

@@ -138,12 +138,12 @@ func _on_targeting_system_updated_target_in_range(is_target_in_range:bool)->void
 func _on_selectable_clicked()->void:
 	match SelectionManager.selected_object_type:
 		SelectionManager.ObjectTypes.CAPTAIN:
-			_add_captain(SelectionManager.object)
+			add_captain(SelectionManager.object)
 		SelectionManager.ObjectTypes.SPELL:
 			apply_spell(SelectionManager.object)
 
 
-func _add_captain(captain:Captain)->void:
+func add_captain(captain:Captain)->void:
 	_targeting_system.aquired_new_target.connect(Callable(captain, "_on_unit_targeting_update_target"))
 	captain.set_deferred("target", _target)
 	_soldier_container.add_captain(captain)

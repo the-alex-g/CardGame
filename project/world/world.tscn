@@ -1,20 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://bu3vngbou6wmj"]
+[gd_scene load_steps=5 format=3 uid="uid://bu3vngbou6wmj"]
 
+[ext_resource type="Script" path="res://world/world.gd" id="1_xmxfa"]
 [ext_resource type="PackedScene" uid="uid://bdh15jqfi0hyn" path="res://towers/tower.tscn" id="2_dymgq"]
-[ext_resource type="PackedScene" uid="uid://xgfxsdir034" path="res://unit/unit.tscn" id="2_ul3bs"]
 [ext_resource type="PackedScene" uid="uid://kyeeqyyxr3wi" path="res://world/hud.tscn" id="3_3dqhi"]
+[ext_resource type="PackedScene" uid="uid://c3p3ij4mm2das" path="res://ai/ai.tscn" id="3_8h5pt"]
 
 [node name="World" type="Node2D"]
+script = ExtResource("1_xmxfa")
 
-[node name="Unit" parent="." instance=ExtResource("2_ul3bs")]
-unit_size = 9
+[node name="Assets" type="Node2D" parent="."]
+
+[node name="AITower" parent="Assets" instance=ExtResource("2_dymgq")]
+position = Vector2(1050, 303)
 team_index = 1
 
-[node name="Unit2" parent="." instance=ExtResource("2_ul3bs")]
-position = Vector2(739, 358)
-color = Color(1, 0, 0, 1)
-
-[node name="Tower" parent="." instance=ExtResource("2_dymgq")]
-position = Vector2(599, 149)
+[node name="PlayerTower" parent="Assets" instance=ExtResource("2_dymgq")]
+position = Vector2(100, 300)
 
 [node name="HUD" parent="." instance=ExtResource("3_3dqhi")]
+
+[node name="AI" parent="." instance=ExtResource("3_8h5pt")]
